@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>image1</key>
+        <value>HSE conference</value>
+    </entry>
+    <entry>
+        <key>image2</key>
+        <value>Site Safety</value>
+    </entry>
+    <entry>
+        <key>image3</key>
+        <value>Fire Extinguisher Chart</value>
+    </entry>
+    <entry>
+        <key>image4</key>
+        <value>Oil and gas</value>
+    </entry>
+    <entry>
+        <key>image1_url</key>
+        <value>R.drawable.welder</value>
+    </entry>
+    <entry>
+        <key>image2_url</key>
+        <value>R.drawable.second</value>
+    </entry>
+    <entry>
+        <key>image3_url</key>
+        <value>R.drawable.third</value>
+    </entry><entry>
+    <key>image4_url</key>
+    <value>R.drawable.fourth</value>
+</entry>
+
+</defaultsMap>
+    <!-- END xml_defaults -->

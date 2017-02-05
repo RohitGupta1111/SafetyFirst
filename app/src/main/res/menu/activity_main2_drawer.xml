@@ -22,15 +22,13 @@
             android:id="@+id/nav_invite"
             android:icon="@drawable/ic_email_white_24dp"
             android:title="Invite"/>
-        <item
-         android:id="@+id/nav_update_profile"
-         android:icon="@drawable/ic_system_update_alt_white_24dp"
-         android:title="Update Profile"/>
+
 
         <item
             android:id="@+id/nav_tnc"
             android:icon="@drawable/ic_description_white_24dp"
             android:title="Terms and Conditions"/>
+
 
         <item
          android:id="@+id/log_out"
