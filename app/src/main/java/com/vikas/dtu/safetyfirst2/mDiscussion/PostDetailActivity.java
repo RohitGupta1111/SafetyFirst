@@ -129,6 +129,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private LinearLayoutManager mImageManager;
     private ArrayList<String> imageList;
     private RecyclerView mImageRecycler;
+    public ImageView rightArrow;
+    public ImageView leftArrow;
 
     private Post post;
     String Uid;
@@ -166,6 +168,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mTitleView = (TextView) findViewById(R.id.post_title);
         mBodyView = (TextView) findViewById(R.id.post_body);
         mImageView = (ImageView) findViewById(R.id.post_image);
+
+        rightArrow = (ImageView) findViewById(R.id.right_arrow);
+        leftArrow = (ImageView) findViewById(R.id.left_arrow);
 
         mImageButton = (ImageButton) findViewById(R.id.image_btn);
         mFileButton = (ImageButton) findViewById(R.id.file_btn);
@@ -243,7 +248,10 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 mAuthorView.setText(post.author);
                 mTitleView.setText(post.title);
                 // mBodyView.setText(post.body); //Replaced by hyperlink text method in line below.
-                setHyperlinkText(mBodyView, post.body);
+                if(post.xmlBody == null)
+                    setHyperlinkText(mBodyView, post.body);
+                else
+                    setHyperlinkText(mBodyView, post.xmlBody);
 
                 postLoaded = true;
                 onCreateOptionsMenu(mMenu);
@@ -254,6 +262,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                     mImageView.setVisibility(View.GONE);
                     mImageRecycler.setVisibility(View.VISIBLE);
                     mImageRecycler.setAdapter(new ImagesAdapter(PostDetailActivity.this, imageList));
+                    leftArrow.setVisibility(View.VISIBLE);
+                    rightArrow.setVisibility(View.VISIBLE);
                 }
 
 
@@ -322,18 +332,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
             textview.setMovementMethod(LinkMovementMethod.getInstance());
             textview.setText(output);
         } else {
-            SpannableStringGenerator toDisplay = new SpannableStringGenerator();
-            try {
-                textview.setText(toDisplay.fromXhtml(input));
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            textview.setText(Html.fromHtml(input));
         }
-
     }
 
     @Override
@@ -938,7 +938,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    private static class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
+    private class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
         private Context mContext;
         private ArrayList<String> imageList;
@@ -959,6 +959,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         public void onBindViewHolder(ImageViewHolder holder, int position) {
             Glide.with(mContext).load(imageList.get(position)).into(holder.postImage);
         }
+
 
         @Override
         public int getItemCount() {

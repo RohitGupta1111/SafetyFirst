@@ -9,17 +9,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,9 +54,16 @@ import com.vikas.dtu.safetyfirst2.mUser.UserProfileActivity;
 
 import java.util.HashMap;
 
+import static com.vikas.dtu.safetyfirst2.mUtils.FirebaseUtil.getCurrentUserId;
+
 public class DynamicDashboardNav extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, GoogleApiClient.OnConnectionFailedListener {
+    //private boolean[] dashboardSection = new boolean[4];
+    private ImageView mNewsImageView;
+    private ImageView mDiscussionImageView;
+    private ImageView mKnowItImageView;
+    private ImageView mLawsImageView;
     private SliderLayout mDemoSlider;
 
     private static final String IMAGE_1 = "image1";
@@ -90,6 +94,82 @@ public class DynamicDashboardNav extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic_dashboard_nav);
+       /* for(int i = 0; i< 4 ; i++)
+        {
+            dashboardSection[i] = false;
+        }*/
+        mNewsImageView = (ImageView)findViewById(R.id.imageView4) ;
+        mDiscussionImageView = (ImageView)findViewById(R.id.imageView5);
+        mLawsImageView = (ImageView)findViewById(R.id.laws);
+        mKnowItImageView = (ImageView)findViewById(R.id.imageView3);
+        mNewsImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i("IMAGE", "motion event: " + event.toString());
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mNewsImageView.setImageResource(R.drawable.news);
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mNewsImageView.setImageResource(R.drawable.news_pressed);
+                        break;
+
+                }
+
+                return false;
+            }
+        });
+        findViewById(R.id.imageView5).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mDiscussionImageView.setImageResource(R.drawable.discussion);
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mDiscussionImageView.setImageResource(R.drawable.discussion_pressed);
+                        break;
+
+                }
+                return false;
+            }
+        });
+        mKnowItImageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mKnowItImageView.setImageResource(R.drawable.knowit);
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mKnowItImageView.setImageResource(R.drawable.knowit_pressed);
+                        break;
+
+                }
+                return false;
+            }
+        });
+
+        mLawsImageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mLawsImageView.setImageResource(R.drawable.laws);
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mLawsImageView.setImageResource(R.drawable.laws_pressed);
+                        break;
+
+                }
+                return false;
+            }
+        });
 
         mFirebaseUser = getCurrentUser();
         if (mFirebaseUser == null) {
@@ -239,6 +319,15 @@ public class DynamicDashboardNav extends BaseActivity
      {
          startActivity(new Intent(DynamicDashboardNav.this, FeedBackActivity.class));
      }
+     else if (id == R.id.nav_update)
+     {
+         startActivity(new Intent(DynamicDashboardNav.this, UpdateProfile.class));
+        /* Intent userDetailIntent = new Intent(DynamicDashboardNav.this, UserProfileActivity.class);
+         userDetailIntent.putExtra(UserProfileActivity.USER_ID_EXTRA_NAME,
+                 getCurrentUserId());
+         startActivity(userDetailIntent);*/
+
+     }
      else if (id == R.id.nav_help) {
          startActivity(new Intent(DynamicDashboardNav.this, Help.class));
 
@@ -314,7 +403,6 @@ public class DynamicDashboardNav extends BaseActivity
     }
 
     public void startNews(View view) {
-
         if (isNetworkConnected()) {
             Intent intent = new Intent(this, NewsActivity.class);
             startActivity(intent);
@@ -322,6 +410,9 @@ public class DynamicDashboardNav extends BaseActivity
             Intent intent = new Intent(this, NoNetworkConnection.class);
             startActivity(intent);
         }
+
+
+
     }
 
     public void startDiscussion(View view) {
